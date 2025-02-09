@@ -13,14 +13,14 @@ function setupGracefulShutdown(
 ): void {
   const shutdown = () => {
     logger.info('Application shutting down...');
-    
+
     // Cron job'ı durdur
     cronJob.stop();
-    
+
     // Servisleri temizle
     cacheService.destroy();
     notificationManager.destroy();
-    
+
     logger.info('Cleanup completed, exiting...');
     process.exit(0);
   };
@@ -28,13 +28,13 @@ function setupGracefulShutdown(
   // Kapatma sinyallerini yakala
   process.on('SIGTERM', shutdown);
   process.on('SIGINT', shutdown);
-  
+
   // Beklenmeyen hataları yakala
   process.on('uncaughtException', (error) => {
     logger.error('Uncaught exception:', error);
     shutdown();
   });
-  
+
   process.on('unhandledRejection', (reason) => {
     logger.error('Unhandled rejection:', reason);
     shutdown();
